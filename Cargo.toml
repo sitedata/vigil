@@ -1,6 +1,6 @@
 [package]
 name = "vigil-server"
-version = "1.24.3"
+version = "1.25.1"
 description = "Microservices Status Page. Monitors a distributed infrastructure and sends alerts (Slack, SMS, etc.)."
 readme = "README.md"
 license = "MPL-2.0"
@@ -19,13 +19,12 @@ doc = false
 
 [dependencies]
 log = { version = "0.4", features = ["std"] }
-clap = { version = "3.2", features = ["std", "cargo"] }
+clap = { version = "4.1", features = ["std", "cargo"] }
 lazy_static = "1.4"
 time = { version = "0.3", features = ["formatting"] }
 serde = "1.0"
 serde_derive = "1.0"
 toml = "0.5"
-base64 = "0.13"
 uuid = { version = "1.1", features = ["v4", "fast-rng"], default-features = false }
 regex = "1.6"
 url = { version = "2.2", default-features = false }
@@ -42,13 +41,12 @@ openssl-probe = "0.1"
 reqwest = { version = "0.11", features = ["native-tls-vendored", "gzip", "blocking", "json"], default-features = false }
 ping = "0.4"
 run_script = "0.10"
-lettre = { version = "0.9", features = ["smtp-transport"], optional = true }
-lettre_email = { version = "0.9", optional = true }
+lettre = { version = "0.10", features = ["smtp-transport", "native-tls", "hostname", "builder"], default-features = false, optional = true }
 libstrophe = { version = "0.17", optional = true }
 
 [features]
 default = ["notifier-email", "notifier-twilio", "notifier-slack", "notifier-zulip", "notifier-telegram", "notifier-pushover", "notifier-gotify", "notifier-matrix", "notifier-webex", "notifier-webhook"]
-notifier-email = ["lettre", "lettre_email"]
+notifier-email = ["lettre"]
 notifier-twilio = []
 notifier-slack = []
 notifier-zulip = []

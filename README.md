@@ -9,7 +9,7 @@ Vigil is an open-source Status Page you can host on your infrastructure, used to
 
 It is useful in microservices contexts to monitor both apps and backends. If a node goes down in your infrastructure, you receive a status change notification in a Slack channel, Email, Twilio SMS or/and XMPP.
 
-_Tested at Rust version: `rustc 1.62.0 (a8314ef7d 2022-06-27)`_
+_Tested at Rust version: `rustc 1.66.1 (90743e729 2023-01-10)`_
 
 **🇭🇺 Crafted in Budapest, Hungary.**
 
@@ -123,13 +123,13 @@ You might find it convenient to run Vigil via Docker. You can find the pre-built
 First, pull the `valeriansaliou/vigil` image:
 
 ```bash
-docker pull valeriansaliou/vigil:v1.24.3
+docker pull valeriansaliou/vigil:v1.25.1
 ```
 
 Then, seed it a configuration file and run it (replace `/path/to/your/vigil/config.cfg` with the path to your configuration file):
 
 ```bash
-docker run -p 8080:8080 -v /path/to/your/vigil/config.cfg:/etc/vigil.cfg valeriansaliou/vigil:v1.24.3
+docker run -p 8080:8080 -v /path/to/your/vigil/config.cfg:/etc/vigil.cfg valeriansaliou/vigil:v1.25.1
 ```
 
 In the configuration file, ensure that:
@@ -302,6 +302,7 @@ Use the sample [config.cfg](https://github.com/valeriansaliou/vigil/blob/master/
 * `http_method` (type _string_, allowed: `GET`, `HEAD`, `POST`, `PUT`, `PATCH`, no default) — HTTP method to use when polling the endpoint (omitting this will default to using `HEAD` or `GET` depending on the `http_body_healthy_match` configuration value)
 * `http_body` (type _string_, allowed: any string, no default) — Body to send in the HTTP request when polling an endpoint (this only works if `http_method` is set to `POST`, `PUT` or `PATCH`)
 * `http_body_healthy_match` (type: _string_, allowed: regular expressions, no default) — HTTP response body for which to report node replica as `healthy` (if the body does not match, the replica will be reported as `dead`, even if the status code check passes; the check uses a `GET` rather than the usual `HEAD` if this option is set)
+* `reveal_replica_name` (type: _boolean_, allowed: `true`, `false`, default: `false`) — Whether to reveal replica name on public status page or not (this can be a security risk if a replica URL is to be kept secret)
 * `rabbitmq_queue` (type: _string_, allowed: RabbitMQ queue names, no default) — RabbitMQ queue associated to node, which to check against for pending payloads via RabbitMQ API (this helps monitor unacked payloads accumulating in the queue)
 * `rabbitmq_queue_nack_healthy_below` (type: _integer_, allowed: any number, no default) — Maximum number of payloads in RabbitMQ queue associated to node, with status `nack` to consider node `healthy` (this overrides the global `plugins.rabbitmq.queue_nack_healthy_below`)
 * `rabbitmq_queue_nack_dead_above` (type: _integer_, allowed: any number, no default) — Threshold on the number of payloads in RabbitMQ queue associated to node, with status `nack` above which node should be considered `dead` (stalled queue, this overrides the global `plugins.rabbitmq.queue_nack_dead_above`)
